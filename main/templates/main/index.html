@@ -1,0 +1,33 @@
+{% extends "main/layout.html" %}
+{% block title %}
+Search
+{% endblock %}
+{% block body%}
+
+<h5 style="text-align: center;"> Search for Planet Data</h5>
+
+    <form method="post">
+        {% csrf_token %}
+    
+        <div style="
+        width:550px;
+        padding-top:20px;
+        border: none;
+        padding-top: 5px;
+        margin-bottom:10px;
+        z-index: 3;
+        margin-left: 25%;">
+            <label for="id_planet"></label>
+            <input type="text" name="planet" id="id_planet" style="
+            width:640px;
+            margin:0 auto;
+            border:1px solid gray;
+            border-radius:25px;
+            text-align: center;
+            height: 35px;">
+        </div>
+        <button type="submit" class="btn btn-outline-primary" style="margin-left: 14px; width: 140px;">Submit</button>   
+    </form>
+
+
+{% endblock %}
