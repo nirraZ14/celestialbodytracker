@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -5,16 +6,20 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     </head>
-    <body>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Search</a>
-            </li>
+    <body style="background-color: #181717;
+    color: #e6e6e6;">
+        <ul class="nav" style="background-color: #2b2b2b;
+        color: #e6e6e6;">
             <li class="nav-item">
                 <a class="nav-link" href="#">Planet Tracker</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Search</a>
+            </li>
         </ul>
-        {% block body %}{% endblock %}
+        <div style="padding:10% 3% 10% 3%; text-align:center;"> 
+          {% block body %}{% endblock %}
+        </div>
     </br>
     </br>
     </body>

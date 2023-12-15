@@ -16,3 +16,6 @@ class PlanetData(models.Model):
     fall=models.TextField()
     zone=models.TextField()
 
+    def body_image_url(self):
+        return f"/static/main/{self.body.lower()}_image.jpeg"
+

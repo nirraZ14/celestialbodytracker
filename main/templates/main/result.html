@@ -3,9 +3,11 @@
 Search Result
 {% endblock %}
 {% block body%}
-<h5 style="margin-left: 14px;">Planet Data</h5>
-<div class="container" style="background-color: rgb(212, 226, 243); border-radius: 15px;">
-    <p><strong>Tracking {{ newData.body.capitalize }} </strong></p>
+<h5 style="margin-left: 14px; text-align: center;">Planet Data</h5>
+<div class="container" style="text-align: left;">
+    
+    <h5 style="text-align: center;"><strong><u>Tracking {{ newData.body.capitalize }}</u> </strong></h5>
+    <img src="{{ body_image_url }}" alt="{{ newData.body }}" style="margin-left: 12cm; height: 190px;">
     <p><strong>Time:</strong> {{ newData.date }} (UTC+ {{ newData.utc }})</p>
     {% if plot_graph %}
         <img src="data:image/png;base64,{{ plot_graph }}" alt="Elevation" style="float: inline-end;">
@@ -16,6 +18,7 @@ Search Result
     <p><strong>Distance in kilometers:</strong> {{ newData.inKm|floatformat:.2 }} km</p>
     <p><strong>Relative Velocity:</strong> {{ newData.rv|floatformat:3 }} m/s </br>( [-] => towards, [+]=> away )</p>
     <p><strong>Ilumination Percentage:</strong> {{ newData.ilumn|floatformat:2 }} %</p>
+ 
     <p><strong>Rise Time:</strong> {{ newData.rise }} [{{ newData.zone }}] </p>
     <p><strong>Fall Time:</strong> {{ newData.fall }} [{{ newData.zone }}]</p>
     

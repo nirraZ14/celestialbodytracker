@@ -4,6 +4,17 @@ Search
 {% endblock %}
 {% block body%}
 
+{% if message %}
+<div class="alert alert-danger" role="alert">
+    Error: Rise Time is not Found
+    Error: Fall Time is not Found
+</div>
+{% endif %}
+{% if error %}
+<div class="alert alert-danger" role="alert">
+    Invalid input
+</div>
+{% endif %}
 <h5 style="text-align: center;"> Search for Planet Data</h5>
 
     <form method="post">
@@ -16,7 +27,8 @@ Search
         padding-top: 5px;
         margin-bottom:10px;
         z-index: 3;
-        margin-left: 25%;">
+        margin-left: 25%;
+        text-align: center;">
             <label for="id_planet"></label>
             <input type="text" name="planet" id="id_planet" style="
             width:640px;

@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 import argparse, time
 from skyfield.api import load,Topos
 from datetime import datetime,timedelta
@@ -172,10 +175,12 @@ def data(body):
             azimuth, elevation, distance=futureaU.apparent().altaz()
 
             futureDistance=distance.to('m').value
-            
             relativeVelocity=(futureDistance - distanceInM)/ float(delta)
             iluminate=almanac.fraction_illuminated(planets,body,t)*100.0  # Return the fraction of the target’s disc that is illuminated.
 
+
+
+            
 
             # local zone
             local_zone = get_localzone()
@@ -223,9 +228,12 @@ def data(body):
                     
             if fall_t is not None:
                     fall_time=(fall_t.astimezone(local_zone).strftime('%d/%m/%Y %H:%M:%S'))
+     
     except KeyboardInterrupt:
-         pass
-    return local,offset,azi,ele,distanceInM,distanceInKm,relativeVelocity,iluminate,rise_time,fall_time,local_zone
+              pass
+    return local,offset,azi,ele,distanceInM,distanceInKm,relativeVelocity,iluminate,rise_time, fall_time,local_zone
+
+
 
 def plot_planet_graph(newDatas):
      alts=[planet.azim for planet in newDatas]
@@ -248,25 +256,31 @@ def plot_planet_graph(newDatas):
      return img_64
 
 def index(request):
-     if request.method=="POST":
-          form=ProjectForm(request.POST)
-          if form.is_valid():
-                body=form.cleaned_data['planet']
-                planets=load('de421.bsp')
-                local_time,offs,az,el,distanceM,distanceKm,relative,ilumin,rise_t,fall_t,local_z=data(body)
-                newData=PlanetData(body=body,date=local_time,utc=offs,azim=az, elev=el,inM=distanceM,inKm=distanceKm,rv=relative,ilumn=ilumin,rise=rise_t,fall=fall_t,zone=local_z)
-                newData.save()
-                newDatas=PlanetData.objects.filter(body=body).order_by('date')
-                
-                plot_graph=plot_planet_graph(newDatas)
-                return render(request,"main/result.html",{
-                        "newData":newData,
-                        "plot_graph":plot_graph
-                })
-     else:
+    if request.method=="POST":
+        form=ProjectForm(request.POST)
+        if form.is_valid():
+            body=form.cleaned_data['planet']
+    
+            # Ephemeris file
+            planets=load('de421.bsp')
+
+            local_time,offs,az,el,distanceM,distanceKm,relative,ilumin,rise_t,fall_t,local_z=data(body)
+            newData=PlanetData(body=body,date=local_time,utc=offs,azim=az, elev=el,inM=distanceM,inKm=distanceKm,rv=relative,ilumn=ilumin,rise=rise_t,fall=fall_t,zone=local_z)
+            newData.save()
+            newDatas=PlanetData.objects.filter(body=body).order_by('date')
+            body_image_url=newData.body_image_url()
+            plot_graph=plot_planet_graph(newDatas)
+            return render(request,"main/result.html",{
+                    "newData":newData,
+                    "plot_graph":plot_graph,
+                    "body_image_url":body_image_url
+                    })
+                      
+                 
+    else:
         form=ProjectForm()
-     return render(request,"main/index.html",{
-         "form":ProjectForm(),
-         "error":False
-    })
-            
+        return render(request,"main/index.html",{
+            "form":form,
+            "error":False
+        })
+                
